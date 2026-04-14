@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eventee — Your Campus Network</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Manrope:wght@200..800&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container-high": "#e9e8e7", "primary-container": "#af9164", "on-primary-container": "#3e2b07", "outline": "#7f766a", "on-surface-variant": "#4e463b", "surface-container": "#eeeeed", "surface-variant": "#e3e2e1", "surface-container-highest": "#e3e2e1", "tertiary": "#4f5f7a", "primary": "#735a32", "secondary-fixed-dim": "#c8c6c5", "background": "#faf9f8", "surface": "#faf9f8", "inverse-surface": "#2f3130", "on-tertiary": "#ffffff", "on-surface": "#1a1c1c", "on-error": "#ffffff", "inverse-on-surface": "#f1f0f0", "surface-dim": "#dadad9", "on-secondary": "#ffffff", "outline-variant": "#d1c5b7", "tertiary-fixed-dim": "#b7c7e7", "on-background": "#1a1c1c", "error": "#ba1a1a", "inverse-primary": "#e3c191", "primary-fixed-dim": "#e3c191", "on-primary": "#ffffff", "primary-fixed": "#ffdeae", "secondary-container": "#e2dfde", "surface-container-lowest": "#ffffff", "on-primary-fixed": "#281900", "surface-container-low": "#f4f3f2", "on-secondary-container": "#636262", "on-primary-fixed-variant": "#5a431d", "on-secondary-fixed": "#1c1b1b", "on-error-container": "#93000a", "surface-tint": "#735a32", "surface-bright": "#faf9f8", "tertiary-fixed": "#d5e3ff", "on-tertiary-fixed": "#0a1c34", "error-container": "#ffdad6", "secondary": "#5f5e5e" }, borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" }, fontFamily: { headline: ["Newsreader", "serif"], body: ["Manrope", "sans-serif"], label: ["Manrope", "sans-serif"] } } } }
+    </script>
+    <style>
+        * {
+            font-family: 'Manrope', sans-serif
+        }
+
+        .font-headline {
+            font-family: 'Newsreader', serif
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #735a32 0%, #af9164 100%)
+        }
+
+        .whisper-shadow {
+            box-shadow: 0px 12px 32px rgba(26, 28, 28, 0.06)
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px
+        }
+
+        .page {
+            display: none
+        }
+
+        .page.active {
+            display: block
+        }
+
+        .tab-btn.active {
+            background: #fff;
+            color: #735a32;
+            box-shadow: 0 2px 8px rgba(115, 90, 50, 0.12)
+        }
+
+        .chip.selected {
+            background: #ffdeae;
+            color: #281900
+        }
+
+        .chip {
+            background: #e9e8e7;
+            color: #4e463b;
+            transition: all 0.15s
+        }
+
+        .chip:hover {
+            background: #e3c191;
+            color: #281900
+        }
+
+        .nav-link.active {
+            color: #735a32;
+            font-weight: 700
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: rgba(115, 90, 50, 0.4) !important
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(26, 28, 28, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 200
+        }
+
+        .modal-overlay.open {
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.35s ease-out
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: linear-gradient(90deg, #735a32, #af9164);
+            transition: width 0.5s
+        }
+
+        .glass-nav {
+            background: rgba(250, 249, 248, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px)
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 0.75rem;
+            padding: 1.25rem 1.5rem
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f4f3f2 25%, #eeeeed 50%, #f4f3f2 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f4f3f2
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d1c5b7;
+            border-radius: 4px
+        }
+
+        .event-card:hover .card-title {
+            color: #735a32
+        }
+
+        .event-card:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s
+        }
+
+        .chart-bar {
+            transition: height 0.6s ease-out
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            transform: translateX(120%);
+            transition: transform 0.3s
+        }
+
+        .toast.show {
+            transform: translateX(0)
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface antialiased min-h-screen">
+
+    <!-- TOAST -->
+    <div id="toast"
+        class="toast bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-xl whisper-shadow text-sm font-medium flex items-center gap-2">
+        <span class="material-symbols-outlined text-green-400">check_circle</span>
+        <span id="toast-msg">Done!</span>
+    </div>
+
+    <!-- NAV -->
+    <nav class="glass-nav sticky top-0 z-50 border-b border-outline-variant/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+            <a href="#" onclick="navigate('home')"
+                class="font-headline italic text-primary text-xl tracking-tight flex-shrink-0">Eventee</a>
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-on-surface-variant">
+                <a href="#" onclick="navigate('events')" class="nav-link hover:text-primary transition-colors"
+                    data-page="events">Events</a>
+                <a href="#" onclick="navigate('societies')" class="nav-link hover:text-primary transition-colors"
+                    data-page="societies">Societies</a>
+                <a href="#" onclick="navigate('network')" class="nav-link hover:text-primary transition-colors"
+                    data-page="network">Network</a>
+                <a href="#" onclick="navigate('ngo')" class="nav-link hover:text-primary transition-colors"
+                    data-page="ngo">NGO & Social</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="nav-search"
+                    class="hidden md:flex items-center gap-2 bg-surface-container-low rounded-full px-3 py-1.5 text-sm text-outline">
+                    <span class="material-symbols-outlined">search</span>
+                    <input id="nav-search-input" placeholder="Search..."
+                        class="bg-transparent border-none outline-none w-36 text-on-surface placeholder:text-outline text-sm"
+                        onkeyup="handleNavSearch(event)" />
+                </div>
+                <div id="auth-buttons" class="flex items-center gap-2">
+                    <button onclick="navigate('login')"
+                        class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors px-3 py-1.5">Login</button>
+                    <button onclick="navigate('signup')"
+                        class="gold-gradient text-on-primary text-sm font-semibold px-4 py-1.5 rounded-full">Sign
+                        Up</button>
+                </div>
+                <div id="user-menu" class="hidden items-center gap-3">
+                    <button onclick="navigate('profile')"
+                        class="w-8 h-8 rounded-full gold-gradient flex items-center justify-center text-white text-sm font-bold"
+                        id="user-avatar">Y</button>
+                    <button onclick="logout()"
+                        class="text-xs text-on-surface-variant hover:text-error transition-colors">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGES -->
+    <div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+        <!-- HOME PAGE -->
+        <div id="page-home" class="page animate-in">
+            <div class="text-center py-16 px-4">
+                <p class="text-xs uppercase tracking-[0.2em] text-on-surface-variant/70 font-bold mb-4">Delhi NCR's
+                    Student Platform</p>
+                <h1 class="font-headline text-5xl md:text-6xl text-on-surface mb-4 leading-tight">Your Campus.<br /><em
+                        class="text-primary">Your Network.</em></h1>
+                <p class="text-on-surface-variant max-w-lg mx-auto mb-8 text-base">Events · Hackathons · Societies ·
+                    NGOs · Networking — everything in one place.</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="navigate('events')"
+                        class="gold-gradient text-on-primary font-semibold px-8 py-3 rounded-full whisper-shadow hover:opacity-90 transition-opacity">Explore
+                        Events</button>
+                    <button onclick="navigate('signup')"
+                        class="border border-outline-variant/30 text-on-surface font-semibold px-8 py-3 rounded-full hover:bg-surface-container-low transition-colors">Join
+                        the Network</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <div class="stat-card whisper-shadow text-center">
+                    <div class="font-headline text-3xl text-primary font-bold">50K+</div>
+                    <div class="text-xs text-on-surface-variant mt-1 uppercase tracking-wider">Students</div>
+                </div>
+                <div class="stat-card whisper-shadow text-center">
+                    <div class="font-headline text-3xl text-primary font-bold">200+</div>
+                    <div class="text-xs text-on-surface-variant mt-1 uppercase tracking-wider">Events/Month</div>
+                </div>
+                <div class="stat-card whisper-shadow text-center">
+                    <div class="font-headline text-3xl text-primary font-bold">500+</div>
+                    <div class="text-xs text-on-surface-variant mt-1 uppercase tracking-wider">Colleges</div>
+                </div>
+                <div class="stat-card whisper-shadow text-center">
+                    <div class="font-headline text-3xl text-primary font-bold">1200+</div>
+                    <div class="text-xs text-on-surface-variant mt-1 uppercase tracking-wider">Opportunities</div>
+                </div>
+            </div>
+
+            <!-- Quick categories -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <button onclick="navigate('events','tech')"
+                    class="bg-surface-container-lowest whisper-shadow rounded-xl p-6 text-center hover:bg-surface-container transition-colors group">
+                    <div class="text-2xl mb-2">💻</div>
+                    <div class="font-semibold text-sm text-on-surface">Tech Events</div>
+                    <div class="text-xs text-on-surface-variant mt-1">Hackathons & Talks</div>
+                </button>
+                <button onclick="navigate('ngo')"
+                    class="bg-surface-container-lowest whisper-shadow rounded-xl p-6 text-center hover:bg-surface-container transition-colors group">
+                    <div class="text-2xl mb-2">🌱</div>
+                    <div class="font-semibold text-sm text-on-surface">NGO & Social</div>
+                    <div class="text-xs text-on-surface-variant mt-1">Community Work</div>
+                </button>
+                <button onclick="navigate('societies')"
+                    class="bg-surface-container-lowest whisper-shadow rounded-xl p-6 text-center hover:bg-surface-container transition-colors group">
+                    <div class="text-2xl mb-2">🏛️</div>
+                    <div class="font-semibold text-sm text-on-surface">Societies</div>
+                    <div class="text-xs text-on-surface-variant mt-1">Join a Community</div>
+                </button>
+                <button onclick="navigate('events','networking')"
+                    class="bg-surface-container-lowest whisper-shadow rounded-xl p-6 text-center hover:bg-surface-container transition-colors group">
+                    <div class="text-2xl mb-2">🤝</div>
+                    <div class="font-semibold text-sm text-on-surface">Networking</div>
+                    <div class="text-xs text-on-surface-variant mt-1">Build Connections</div>
+                </button>
+            </div>
+
+            <!-- Featured events preview -->
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="font-headline text-2xl text-on-surface">Featured Events</h2>
+                    <button onclick="navigate('events')" class="text-sm text-primary font-semibold hover:underline">View
+                        All →</button>
+                </div>
+                <div id="home-events-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
+            </div>
+        </div>
+
+        <!-- EVENTS PAGE -->
+        <div id="page-events" class="page animate-in">
+            <div class="mb-8">
+                <h1 class="font-headline text-4xl text-on-surface mb-2"><em>Campus</em> Curations</h1>
+                <p class="text-on-surface-variant">Discover intellectual gatherings, cultural exhibitions, and technical
+                    symposia.</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <div class="flex gap-2 bg-surface-container-low rounded-full p-1 overflow-x-auto" id="event-cats">
+                    <button class="tab-btn active px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap"
+                        onclick="filterEvents('all',this)">All Events</button>
+                    <button
+                        class="tab-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap text-on-surface-variant"
+                        onclick="filterEvents('tech',this)">Tech & Hackathons</button>
+                    <button
+                        class="tab-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap text-on-surface-variant"
+                        onclick="filterEvents('academic',this)">Academic</button>
+                    <button
+                        class="tab-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap text-on-surface-variant"
+                        onclick="filterEvents('cultural',this)">Cultural</button>
+                    <button
+                        class="tab-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap text-on-surface-variant"
+                        onclick="filterEvents('networking',this)">Networking</button>
+                </div>
+                <div class="flex gap-2 ml-auto">
+                    <div class="flex items-center gap-2 bg-surface-container-low rounded-full px-4 py-2">
+                        <span class="material-symbols-outlined text-outline">search</span>
+                        <input id="events-search" placeholder="Search events..."
+                            class="bg-transparent border-none outline-none text-sm w-40 text-on-surface placeholder:text-outline"
+                            oninput="debounceSearch()" />
+                    </div>
+                    <button onclick="useGeoForEvents()"
+                        class="bg-surface-container-low rounded-full px-4 py-2 flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors"
+                        title="Find nearby events">
+                        <span class="material-symbols-outlined">my_location</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recommended strip (logged in users) -->
+            <div id="recommended-strip" class="hidden mb-8">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined text-primary">auto_awesome</span>
+                    <h3 class="font-semibold text-on-surface">Recommended for You</h3>
+                    <span id="rec-basis"
+                        class="text-xs text-on-surface-variant bg-primary-fixed px-2 py-0.5 rounded-full"></span>
+                </div>
+                <div id="recommended-events" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+            </div>
+
+            <div id="events-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
+            <div id="events-loading" class="text-center py-12 text-on-surface-variant hidden">
+                <div
+                    class="inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin">
+                </div>
+            </div>
+            <div class="text-center mt-8" id="load-more-events">
+                <button onclick="loadMoreEvents()"
+                    class="border border-outline-variant/30 text-on-surface-variant font-medium px-8 py-3 rounded-full hover:bg-surface-container-low transition-colors text-sm">
+                    Explore More Events <span class="material-symbols-outlined text-sm align-middle">expand_more</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- EVENT DETAIL PAGE -->
+        <div id="page-event-detail" class="page animate-in">
+            <div id="event-detail-content"></div>
+        </div>
+
+        <!-- SOCIETIES PAGE -->
+        <div id="page-societies" class="page animate-in">
+            <div class="mb-8">
+                <h1 class="font-headline text-4xl text-on-surface mb-2">The Directory of<br /><em>Distinguished
+                        Societies.</em></h1>
+                <p class="text-on-surface-variant max-w-xl">Explore a curated network of intellectual communities,
+                    artistic guilds, and athletic fellowships.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <div class="flex items-center gap-2 bg-surface-container-low rounded-full px-4 py-2 flex-1 max-w-sm">
+                    <span class="material-symbols-outlined text-outline">search</span>
+                    <input id="soc-search" placeholder="Search by name or field..."
+                        class="bg-transparent border-none outline-none text-sm flex-1 text-on-surface placeholder:text-outline"
+                        oninput="debounceSearch('society')" />
+                </div>
+                <select id="soc-college-filter"
+                    class="bg-surface-container-low border-none rounded-full px-4 py-2 text-sm text-on-surface-variant outline-none"
+                    onchange="loadSocieties()">
+                    <option value="">All Colleges</option>
+                </select>
+                <select id="soc-cat-filter"
+                    class="bg-surface-container-low border-none rounded-full px-4 py-2 text-sm text-on-surface-variant outline-none"
+                    onchange="loadSocieties()">
+                    <option value="">All Disciplines</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Literary">Literary</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Arts">Arts</option>
+                    <option value="NGO/Social">NGO/Social</option>
+                    <option value="Sports">Sports</option>
+                </select>
+                <button onclick="useGeoForSocieties()"
+                    class="bg-surface-container-low rounded-full px-4 py-2 flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">near_me</span> Nearest First
+                </button>
+            </div>
+
+            <!-- Chips -->
+            <div class="flex gap-2 mb-6 flex-wrap">
+                <button class="chip selected px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide"
+                    onclick="setSocChip('',this)">All Memberships</button>
+                <button class="chip px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide"
+                    onclick="setSocChip('Academic',this)">Academic Honors</button>
+                <button class="chip px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide"
+                    onclick="setSocChip('Literary',this)">Debate & Rhetoric</button>
+                <button class="chip px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide"
+                    onclick="setSocChip('Arts',this)">Orchestral & Arts</button>
+                <button class="chip px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide"
+                    onclick="setSocChip('Tech',this)">Tech Guilds</button>
+                <button class="chip px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide"
+                    onclick="setSocChip('NGO/Social',this)">NGO & Social</button>
+            </div>
+
+            <div id="societies-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
+        </div>
+
+        <!-- SOCIETY DETAIL PAGE -->
+        <div id="page-society-detail" class="page animate-in">
+            <div id="society-detail-content"></div>
+        </div>
+
+        <!-- NGO PAGE -->
+        <div id="page-ngo" class="page animate-in">
+            <div class="mb-8">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-2xl">🌱</span>
+                    <span class="text-xs uppercase tracking-[0.2em] text-on-surface-variant/70 font-bold">Social
+                        Impact</span>
+                </div>
+                <h1 class="font-headline text-4xl text-on-surface mb-2"><em>NGO & Community</em><br />Events</h1>
+                <p class="text-on-surface-variant max-w-xl">Blood donation, tree planting, community service, and social
+                    initiatives from campuses across Delhi NCR.</p>
+            </div>
+            <div id="ngo-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
+        </div>
+
+        <!-- NETWORK PAGE -->
+        <div id="page-network" class="page animate-in">
+            <div class="mb-8">
+                <h1 class="font-headline text-4xl text-on-surface mb-2">Campus <em>Network</em></h1>
+                <p class="text-on-surface-variant">Connect with students, discover colleges, and find your people.</p>
+            </div>
+            <div id="nearby-colleges-grid" class="mb-8">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined text-primary">location_on</span>
+                    <h3 class="font-semibold">Colleges Near You</h3>
+                    <button onclick="loadNearbyColleges()" class="text-xs text-primary ml-2 hover:underline">Refresh
+                        with Location</button>
+                </div>
+                <div id="colleges-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </div>
+
+        <!-- LOGIN PAGE -->
+        <div id="page-login" class="page animate-in">
+            <div class="min-h-[80vh] flex flex-col items-center justify-center">
+                <div class="text-center mb-8">
+                    <h1 class="font-headline italic text-3xl text-primary-container mb-1">Eventee</h1>
+                    <p class="text-xs uppercase tracking-[0.2em] text-on-surface-variant/70">Your Campus Network</p>
+                </div>
+                <div class="w-full max-w-md bg-surface-container-lowest rounded-xl whisper-shadow overflow-hidden">
+                    <div class="p-2 mx-6 mt-8 flex gap-1 bg-surface-container-low rounded-full">
+                        <button class="tab-btn active flex-1 py-2.5 px-4 rounded-full text-sm font-semibold"
+                            id="login-student-tab" onclick="setLoginRole('student')">Student</button>
+                        <button
+                            class="tab-btn flex-1 py-2.5 px-4 rounded-full text-sm font-medium text-on-surface-variant"
+                            id="login-manager-tab" onclick="setLoginRole('manager')">Society Manager</button>
+                    </div>
+                    <div class="p-8">
+                        <h2 class="text-2xl font-headline font-medium text-center mb-2">Welcome Back</h2>
+                        <p class="text-sm text-on-surface-variant text-center mb-8">Access your academic sanctuary</p>
+                        <div id="login-error"
+                            class="hidden bg-error-container text-on-error-container text-sm px-4 py-3 rounded-xl mb-4">
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5 ml-1">Student
+                                    ID</label>
+                                <input id="login-sid" type="text" placeholder="2K21/CO/101"
+                                    class="w-full bg-surface-container-low rounded-xl px-4 py-3.5 text-sm border-none outline-none placeholder:text-outline/50 focus:ring-1 focus:ring-primary/20" />
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5 ml-1">Password</label>
+                                <input id="login-pass" type="password" placeholder="••••••••"
+                                    class="w-full bg-surface-container-low rounded-xl px-4 py-3.5 text-sm border-none outline-none placeholder:text-outline/50 focus:ring-1 focus:ring-primary/20"
+                                    onkeydown="if(event.key==='Enter')doLogin()" />
+                            </div>
+                        </div>
+                        <button onclick="doLogin()"
+                            class="w-full gold-gradient text-on-primary py-4 rounded-full font-semibold mt-6 hover:opacity-90 transition-opacity">Enter
+                            Eventee</button>
+                        <div id="manager-tip"
+                            class="hidden mt-4 p-4 bg-primary-fixed/50 rounded-xl text-xs text-on-primary-fixed">
+                            <strong>Managers:</strong> Use your student ID. Your account must be role=manager to access
+                            manager features.
+                        </div>
+                        <p class="text-sm text-center text-on-surface-variant mt-6">New here? <a href="#"
+                                onclick="navigate('signup')" class="text-primary font-bold hover:underline">Create
+                                Account</a></p>
+                        <p class="text-xs text-center text-on-surface-variant mt-2">Demo: ID <code
+                                class="bg-surface-container px-1 rounded">2K21/CO/101</code> · Pass <code
+                                class="bg-surface-container px-1 rounded">demo123</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIGNUP PAGE -->
+        <div id="page-signup" class="page animate-in">
+            <div class="min-h-[80vh] flex flex-col items-center justify-center py-8">
+                <div class="text-center mb-8">
+                    <h1 class="font-headline italic text-3xl text-primary-container mb-1">Join Eventee</h1>
+                    <p class="text-xs uppercase tracking-[0.2em] text-on-surface-variant/70">Create Your Campus Profile
+                    </p>
+                </div>
+                <div class="w-full max-w-lg bg-surface-container-lowest rounded-xl whisper-shadow overflow-hidden">
+                    <!-- Progress -->
+                    <div class="bg-surface-container-low h-1.5 mx-0">
+                        <div class="progress-bar" id="signup-progress" style="width:33%"></div>
+                    </div>
+                    <!-- Step 1 -->
+                    <div id="signup-step-1" class="p-8">
+                        <h3 class="font-headline text-xl mb-1">Basic Information</h3>
+                        <p class="text-sm text-on-surface-variant mb-6">Step 1 of 3</p>
+                        <div id="signup-error"
+                            class="hidden bg-error-container text-on-error-container text-sm px-4 py-3 rounded-xl mb-4">
+                        </div>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Full
+                                        Name</label>
+                                    <input id="su-name" type="text" placeholder="Yash Sharma"
+                                        class="w-full bg-surface-container-low rounded-xl px-4 py-3 text-sm border-none outline-none" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Student
+                                        ID</label>
+                                    <input id="su-sid" type="text" placeholder="2K21/CO/101"
+                                        class="w-full bg-surface-container-low rounded-xl px-4 py-3 text-sm border-none outline-none" />
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Email</label>
+                                <input id="su-email" type="email" placeholder="you@dtu.ac.in"
+                                    class="w-full bg-surface-container-low rounded-xl px-4 py-3 text-sm border-none outline-none" />
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">College</label>
+                                <select id="su-college"
+                                    class="w-full bg-surface-container-low rounded-xl px-4 py-3 text-sm border-none outline-none text-on-surface">
+                                    <option value="">Select College</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Year</label>
+                                    <select id="su-year"
+                                        class="w-full bg-surface-container-low rounded-xl px-4 py-3 text-sm border-none outline-none">
+                                        <option value="1">1st Year</option>
+                                        <option value="2">2nd Year</option>
+                                        <option value="3">3rd Year</option>
+                                        <option value="4">4th Year</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Role</label>
+                                    <select id="su-role"
+                                        class="w-full bg-surface-container-low rounded-xl px-4 py-3 text-sm border-none outline-none">
+                                        <option value="student">Student</option>
+                                        <option value="manager">Society Manager</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Password</label>
+                                <input id="su-pass" type="password" placeholder="Min 6 characters"
+                                    class="w-full bg-surface-container-low rounded-xl px-4 py-3 text-sm border-none outline-none" />
+                            </div>
+                        </div>
+                        <button onclick="signupStep1()"
+                            class="w-full gold-gradient text-on-primary py-4 rounded-full font-semibold mt-6">Continue
+                            →</button>
+                    </div>
+                    <!-- Step 2: Interests -->
+                    <div id="signup-step-2" class="p-8 hidden">
+                        <h3 class="font-headline text-xl mb-1">Your Interests</h3>
+                        <p class="text-sm text-on-surface-variant mb-6">Step 2 of 3 — Pick what excites you. We'll
+                            personalize your feed.</p>
+                        <div id="interest-picker" class="space-y-4"></div>
+                        <button onclick="signupStep2()"
+                            class="w-full gold-gradient text-on-primary py-4 rounded-full font-semibold mt-6">Continue
+                            →</button>
+                    </div>
+                    <!-- Step 3: Location -->
+                    <div id="signup-step-3" class="p-8 hidden">
+                        <h3 class="font-headline text-xl mb-1">Your Location</h3>
+                        <p class="text-sm text-on-surface-variant mb-6">Step 3 of 3 — Help us show you nearby events.
+                        </p>
+                        <div class="bg-surface-container-low rounded-xl p-6 text-center">
+                            <span class="material-symbols-outlined text-primary text-4xl">location_on</span>
+                            <p class="text-sm text-on-surface-variant mt-2 mb-4">Allow location access to discover
+                                events and colleges near you.</p>
+                            <button onclick="requestGeoSignup()"
+                                class="gold-gradient text-on-primary px-6 py-3 rounded-full font-semibold text-sm">Enable
+                                Location</button>
+                            <button onclick="skipGeo()"
+                                class="block text-on-surface-variant text-sm mt-3 mx-auto hover:text-primary">Skip for
+                                now</button>
+                        </div>
+                        <p id="geo-status" class="text-center text-sm text-primary mt-3 hidden"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTERESTS MODAL (post-login) -->
+        <div id="interests-modal" class="modal-overlay">
+            <div
+                class="bg-surface-container-lowest rounded-xl whisper-shadow p-8 max-w-lg w-full mx-4 max-h-[80vh] overflow-y-auto">
+                <h3 class="font-headline text-2xl mb-1">What interests you?</h3>
+                <p class="text-sm text-on-surface-variant mb-6">Personalize your Eventee experience. Select all that
+                    apply.</p>
+                <div id="modal-interest-picker" class="space-y-4"></div>
+                <button onclick="saveModalInterests()"
+                    class="w-full gold-gradient text-on-primary py-4 rounded-full font-semibold mt-6">Save & Explore
+                    →</button>
+            </div>
+        </div>
+
+        <!-- PROFILE PAGE -->
+        <div id="page-profile" class="page animate-in">
+            <div id="profile-content"></div>
+        </div>
+
+        <!-- CREATE EVENT MODAL -->
+        <div id="create-event-modal" class="modal-overlay">
+            <div
+                class="bg-surface-container-lowest rounded-xl whisper-shadow p-8 max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-headline text-xl">Create New Event</h3>
+                    <button onclick="closeModal('create-event-modal')"
+                        class="text-on-surface-variant hover:text-on-surface"><span
+                            class="material-symbols-outlined">close</span></button>
+                </div>
+                <div class="space-y-4">
+                    <div><label class="label-field">Event Title</label><input id="ce-title" class="input-field"
+                            placeholder="Winter Solstice Hackathon" /></div>
+                    <div><label class="label-field">Society</label><select id="ce-society" class="input-field"></select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label class="label-field">Category</label>
+                            <select id="ce-category" class="input-field">
+                                <option>Tech</option>
+                                <option>Academic</option>
+                                <option>Cultural</option>
+                                <option>Networking</option>
+                                <option>NGO/Social</option>
+                                <option>Sports</option>
+                            </select>
+                        </div>
+                        <div><label class="label-field">Date</label><input id="ce-date" type="datetime-local"
+                                class="input-field" /></div>
+                    </div>
+                    <div><label class="label-field">Venue</label><input id="ce-venue" class="input-field"
+                            placeholder="Great Hall, DTU" /></div>
+                    <div><label class="label-field">Short Description</label><textarea id="ce-desc"
+                            class="input-field h-20 resize-none" placeholder="Brief description..."></textarea></div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label class="label-field">Price (₹, 0 for free)</label><input id="ce-price" type="number"
+                                class="input-field" value="0" /></div>
+                        <div><label class="label-field">Capacity</label><input id="ce-cap" type="number"
+                                class="input-field" value="100" /></div>
+                    </div>
+                    <div><label class="label-field">Tags (comma separated)</label><input id="ce-tags"
+                            class="input-field" placeholder="AI, hackathon, coding" /></div>
+                </div>
+                <button onclick="submitCreateEvent()"
+                    class="w-full gold-gradient text-on-primary py-4 rounded-full font-semibold mt-6">Create
+                    Event</button>
+            </div>
+        </div>
+
+        <!-- CREATE SOCIETY MODAL -->
+        <div id="create-society-modal" class="modal-overlay">
+            <div
+                class="bg-surface-container-lowest rounded-xl whisper-shadow p-8 max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-headline text-xl">Register New Society</h3>
+                    <button onclick="closeModal('create-society-modal')"
+                        class="text-on-surface-variant hover:text-on-surface"><span
+                            class="material-symbols-outlined">close</span></button>
+                </div>
+                <div class="space-y-4">
+                    <div><label class="label-field">Society Name</label><input id="cs-name" class="input-field"
+                            placeholder="The DevNation Club" /></div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label class="label-field">College</label><select id="cs-college"
+                                class="input-field"></select></div>
+                        <div><label class="label-field">Category</label>
+                            <select id="cs-category" class="input-field">
+                                <option>Tech</option>
+                                <option>Literary</option>
+                                <option>Academic</option>
+                                <option>Arts</option>
+                                <option>NGO/Social</option>
+                                <option>Sports</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div><label class="label-field">Description</label><textarea id="cs-desc"
+                            class="input-field h-20 resize-none" placeholder="What does your society do?"></textarea>
+                    </div>
+                    <div><label class="label-field">Charter / Mission</label><textarea id="cs-charter"
+                            class="input-field h-20 resize-none" placeholder="Your society's core values..."></textarea>
+                    </div>
+                    <div><label class="label-field">Tags</label><input id="cs-tags" class="input-field"
+                            placeholder="debate, philosophy, writing" /></div>
+                </div>
+                <button onclick="submitCreateSociety()"
+                    class="w-full gold-gradient text-on-primary py-4 rounded-full font-semibold mt-6">Register
+                    Society</button>
+            </div>
+        </div>
+
+    </div><!-- /app -->
+
+    <style>
+        .label-field {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #735a32;
+            margin-bottom: 6px
+        }
+
+        .input-field {
+            width: 100%;
+            background: #f4f3f2;
+            border-radius: 0.75rem;
+            padding: 12px 16px;
+            font-size: 14px;
+            border: none;
+            outline: none;
+            color: #1a1c1c
+        }
+
+        select.input-field {
+            color: #1a1c1c
+        }
+    </style>
+
+    <script>
+        // =========================================================
+        // STATE
+        // =========================================================
+        const API = 'http://localhost:8000/api';
+        let state = {
+            currentPage: 'home',
+            user: null,
+            token: null,
+            loginRole: 'student',
+            eventsPage: 1,
+            eventsCategory: 'all',
+            userLat: null,
+            userLng: null,
+            selectedInterests: [],
+            signupData: {},
+            searchTimer: null,
+        };
+
+        // =========================================================
+        // INIT
+        // =========================================================
+        window.onload = async () => {
+            const saved = localStorage.getItem('eventee_token');
+            const savedUser = localStorage.getItem('eventee_user');
+            if (saved && savedUser) {
+                state.token = saved;
+                state.user = JSON.parse(savedUser);
+                updateNavAuth();
+            }
+            await loadCollegesForSelects();
+            navigate('home');
+            // Try to get location silently
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    state.userLat = pos.coords.latitude;
+                    state.userLng = pos.coords.longitude;
+                }, () => { });
+            }
+        };
+
+        // =========================================================
+        // NAVIGATION
+        // =========================================================
+        function navigate(page, param = null) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const el = document.getElementById(`page-${page}`);
+            if (!el) return;
+            el.classList.add('active');
+            state.currentPage = page;
+
+            // Update nav active state
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.toggle('active', l.dataset.page === page);
+            });
+
+            // Load page data
+            if (page === 'home') loadHomeData();
+            else if (page === 'events') { if (param) state.eventsCategory = param; loadEvents(true); loadRecommended(); }
+            else if (page === 'societies') loadSocieties();
+            else if (page === 'ngo') loadNgoEvents();
+            else if (page === 'network') loadNearbyColleges();
+            else if (page === 'profile') loadProfile();
+            else if (page === 'signup') loadCollegesForSignup();
+
+            window.scrollTo(0, 0);
+            return false;
+        }
+
+        // =========================================================
+        // AUTH
+        // =========================================================
+        function updateNavAuth() {
+            if (state.user) {
+                document.getElementById('auth-buttons').classList.add('hidden');
+                document.getElementById('user-menu').classList.remove('hidden');
+                document.getElementById('user-menu').classList.add('flex');
+                const initials = (state.user.name || 'U').charAt(0).toUpperCase();
+                document.getElementById('user-avatar').textContent = initials;
+            } else {
+                document.getElementById('auth-buttons').classList.remove('hidden');
+                document.getElementById('user-menu').classList.add('hidden');
+                document.getElementById('user-menu').classList.remove('flex');
+            }
+        }
+
+        function setLoginRole(role) {
+            state.loginRole = role;
+            const st = document.getElementById('login-student-tab');
+            const mt = document.getElementById('login-manager-tab');
+            const tip = document.getElementById('manager-tip');
+            if (role === 'manager') {
+                mt.classList.add('active'); mt.classList.remove('text-on-surface-variant');
+                st.classList.remove('active'); st.classList.add('text-on-surface-variant');
+                tip.classList.remove('hidden');
+            } else {
+                st.classList.add('active'); st.classList.remove('text-on-surface-variant');
+                mt.classList.remove('active'); mt.classList.add('text-on-surface-variant');
+                tip.classList.add('hidden');
+            }
+        }
+
+        async function doLogin() {
+            const sid = document.getElementById('login-sid').value.trim();
+            const pass = document.getElementById('login-pass').value;
+            const errEl = document.getElementById('login-error');
+            if (!sid || !pass) { showError(errEl, 'Please fill in all fields'); return; }
+
+            try {
+                const res = await fetch(`${API}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ student_id: sid, password: pass, role: state.loginRole })
+                });
+                const data = await res.json();
+                if (!res.ok) { showError(errEl, data.detail || 'Login failed'); return; }
+
+                state.token = data.access_token;
+                state.user = data.user;
+                localStorage.setItem('eventee_token', state.token);
+                localStorage.setItem('eventee_user', JSON.stringify(state.user));
+                updateNavAuth();
+                errEl.classList.add('hidden');
+
+                if (data.needs_interests) {
+                    navigate('events');
+                    openInterestsModal();
+                } else {
+                    navigate('events');
+                    showToast(`Welcome back, ${state.user.name}! 👋`);
+                }
+            } catch (e) {
+                showError(errEl, 'Connection error. Make sure the backend is running.');
+            }
+        }
+
+        function logout() {
+            state.token = null; state.user = null;
+            localStorage.removeItem('eventee_token');
+            localStorage.removeItem('eventee_user');
+            updateNavAuth();
+            navigate('home');
+            showToast('Logged out successfully');
+        }
+
+        // =========================================================
+        // SIGNUP
+        // =========================================================
+        async function loadCollegesForSignup() {
+            const res = await apiFetch('/auth/colleges');
+            if (!res) return;
+            const sel = document.getElementById('su-college');
+            if (!sel) return;
+            sel.innerHTML = '<option value="">Select College</option>';
+            res.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+        }
+
+        async function loadCollegesForSelects() {
+            const res = await apiFetch('/auth/colleges');
+            if (!res) return;
+            ['cs-college'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) res.forEach(c => el.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+            });
+            ['soc-college-filter'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) res.forEach(c => el.innerHTML += `<option value="${c.id}">${c.short}</option>`);
+            });
+        }
+
+        async function signupStep1() {
+            const err = document.getElementById('signup-error');
+            const name = document.getElementById('su-name').value.trim();
+            const sid = document.getElementById('su-sid').value.trim();
+            const email = document.getElementById('su-email').value.trim();
+            const college = document.getElementById('su-college').value;
+            const pass = document.getElementById('su-pass').value;
+            const role = document.getElementById('su-role').value;
+            const year = document.getElementById('su-year').value;
+
+            if (!name || !sid || !email || !college || !pass) { showError(err, 'Please fill all fields'); return; }
+            if (pass.length < 6) { showError(err, 'Password must be at least 6 characters'); return; }
+
+            state.signupData = { name, student_id: sid, email, college_id: college, password: pass, role, year: parseInt(year) };
+
+            // Move to step 2
+            document.getElementById('signup-step-1').classList.add('hidden');
+            document.getElementById('signup-step-2').classList.remove('hidden');
+            document.getElementById('signup-progress').style.width = '66%';
+            err.classList.add('hidden');
+            renderInterestPicker('interest-picker');
+        }
+
+        function signupStep2() {
+            const selected = document.querySelectorAll('#interest-picker .chip.selected');
+            state.selectedInterests = Array.from(selected).map(el => el.dataset.tag);
+            document.getElementById('signup-step-2').classList.add('hidden');
+            document.getElementById('signup-step-3').classList.remove('hidden');
+            document.getElementById('signup-progress').style.width = '100%';
+        }
+
+        async function requestGeoSignup() {
+            const status = document.getElementById('geo-status');
+            status.textContent = 'Getting location...';
+            status.classList.remove('hidden');
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                state.userLat = pos.coords.latitude;
+                state.userLng = pos.coords.longitude;
+                status.textContent = '✓ Location captured!';
+                await completeSignup();
+            }, () => {
+                status.textContent = 'Could not get location';
+                setTimeout(completeSignup, 1000);
+            });
+        }
+
+        async function skipGeo() { await completeSignup(); }
+
+        async function completeSignup() {
+            try {
+                const res = await fetch(`${API}/auth/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(state.signupData)
+                });
+                const data = await res.json();
+                if (!res.ok) { showToast('Signup error: ' + (data.detail || 'Unknown'), 'error'); return; }
+
+                state.token = data.access_token;
+                state.user = data.user;
+                localStorage.setItem('eventee_token', state.token);
+                localStorage.setItem('eventee_user', JSON.stringify(state.user));
+                updateNavAuth();
+
+                // Save interests
+                if (state.selectedInterests.length > 0) {
+                    await authFetch('/users/me/interests', 'PUT', { interests: state.selectedInterests });
+                    state.user.interests = state.selectedInterests;
+                    localStorage.setItem('eventee_user', JSON.stringify(state.user));
+                }
+                // Save location
+                if (state.userLat && state.userLng) {
+                    await authFetch(`/users/me/location?lat=${state.userLat}&lng=${state.userLng}`, 'PUT');
+                }
+
+                navigate('events');
+                showToast(`Welcome to Eventee, ${state.user.name}! 🎉`);
+            } catch (e) {
+                showToast('Connection error', 'error');
+            }
+        }
+
+        // =========================================================
+        // INTEREST PICKER
+        // =========================================================
+        const INTEREST_CATS = [
+            { id: 'tech', label: 'Technology', icon: '💻', tags: ['AI/ML', 'Web Dev', 'Mobile', 'Hackathons', 'Data Science', 'Cybersecurity'] },
+            { id: 'academic', label: 'Academic', icon: '🔬', tags: ['Physics', 'Mathematics', 'Philosophy', 'Engineering', 'Research'] },
+            { id: 'cultural', label: 'Arts & Culture', icon: '🎭', tags: ['Music', 'Dance', 'Theatre', 'Fine Arts', 'Photography', 'Literature'] },
+            { id: 'sports', label: 'Sports', icon: '⚽', tags: ['Cricket', 'Football', 'Basketball', 'Chess', 'Athletics'] },
+            { id: 'social', label: 'Social', icon: '🌱', tags: ['NGO', 'Volunteering', 'Environment', 'Debate', 'MUN'] },
+            { id: 'networking', label: 'Career', icon: '🤝', tags: ['Internships', 'Startups', 'Finance', 'Consulting', 'Marketing'] },
+        ];
+
+        function renderInterestPicker(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = INTEREST_CATS.map(cat => `
+    <div>
+      <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">${cat.icon} ${cat.label}</p>
+      <div class="flex flex-wrap gap-2">
+        ${cat.tags.map(tag => `<button class="chip px-3 py-1.5 rounded-full text-xs font-semibold" data-tag="${tag}" onclick="toggleChip(this)">${tag}</button>`).join('')}
+      </div>
+    </div>
+  `).join('');
+        }
+
+        function toggleChip(el) {
+            el.classList.toggle('selected');
+        }
+
+        // =========================================================
+        // INTERESTS MODAL
+        // =========================================================
+        function openInterestsModal() {
+            renderInterestPicker('modal-interest-picker');
+            document.getElementById('interests-modal').classList.add('open');
+        }
+
+        async function saveModalInterests() {
+            const selected = document.querySelectorAll('#modal-interest-picker .chip.selected');
+            const interests = Array.from(selected).map(el => el.dataset.tag);
+            if (interests.length === 0) { document.getElementById('interests-modal').classList.remove('open'); navigate('events'); return; }
+            await authFetch('/users/me/interests', 'PUT', { interests });
+            state.user.interests = interests;
+            localStorage.setItem('eventee_user', JSON.stringify(state.user));
+            document.getElementById('interests-modal').classList.remove('open');
+            showToast('Interests saved! Your feed is personalized 🎯');
+            loadRecommended();
+        }
+
+        // =========================================================
+        // EVENTS
+        // =========================================================
+        async function loadHomeData() {
+            const events = await apiFetch('/events/?limit=6');
+            if (events) renderEventGrid(events.events, 'home-events-grid');
+        }
+
+        async function loadEvents(reset = false) {
+            if (reset) { state.eventsPage = 1; document.getElementById('events-grid').innerHTML = ''; }
+            showLoading('events-loading');
+            const search = document.getElementById('events-search')?.value || '';
+            let url = `/events/?category=${state.eventsCategory}&page=${state.eventsPage}&limit=9&search=${search}`;
+            if (state.userLat) url += `&lat=${state.userLat}&lng=${state.userLng}`;
+
+            const data = await apiFetch(url);
+            hideLoading('events-loading');
+            if (!data) return;
+            renderEventGrid(data.events, 'events-grid', !reset);
+            document.getElementById('load-more-events').style.display = data.page >= data.pages ? 'none' : 'block';
+        }
+
+        async function loadRecommended() {
+            if (!state.token) { document.getElementById('recommended-strip').classList.add('hidden'); return; }
+            const data = await authFetch('/events/recommended');
+            if (!data || !data.events?.length) { document.getElementById('recommended-strip').classList.add('hidden'); return; }
+            document.getElementById('recommended-strip').classList.remove('hidden');
+            const basisEl = document.getElementById('rec-basis');
+            basisEl.textContent = data.basis === 'personalized' ? `Based on: ${data.interests?.slice(0, 3).join(', ')}` : 'Featured picks';
+            renderEventGrid(data.events, 'recommended-events');
+        }
+
+        async function loadNgoEvents() {
+            const data = await apiFetch('/events/?category=ngo&limit=12');
+            if (data) renderEventGrid(data.events, 'ngo-grid');
+        }
+
+        function filterEvents(category, btn) {
+            state.eventsCategory = category;
+            document.querySelectorAll('#event-cats .tab-btn').forEach(b => {
+                b.classList.remove('active'); b.classList.add('text-on-surface-variant');
+            });
+            btn.classList.add('active'); btn.classList.remove('text-on-surface-variant');
+            loadEvents(true);
+        }
+
+        function loadMoreEvents() {
+            state.eventsPage++;
+            loadEvents(false);
+        }
+
+        let searchTimer;
+        function debounceSearch(type = 'event') {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => type === 'event' ? loadEvents(true) : loadSocieties(), 400);
+        }
+
+        function handleNavSearch(e) {
+            if (e.key === 'Enter') {
+                const val = document.getElementById('nav-search-input').value.trim();
+                if (val) { navigate('events'); setTimeout(() => { document.getElementById('events-search').value = val; loadEvents(true); }, 100); }
+            }
+        }
+
+        function renderEventGrid(events, containerId, append = false) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            if (!append) container.innerHTML = '';
+            if (!events?.length) {
+                if (!append) container.innerHTML = `<div class="col-span-3 text-center py-16 text-on-surface-variant"><span class="material-symbols-outlined text-4xl block mb-2">event_busy</span>No events found</div>`;
+                return;
+            }
+            events.forEach(e => {
+                const price = e.price === 0 ? (e.price_label || 'Free Entry') : `₹${e.price}`;
+                const date = e.date ? new Date(e.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '';
+                const pct = e.capacity ? Math.round((e.registered || 0) / e.capacity * 100) : 0;
+                const catColor = { 'Tech': 'bg-inverse-surface text-inverse-on-surface', 'Cultural': 'bg-tertiary-fixed text-on-tertiary-fixed', 'Academic': 'bg-primary-fixed text-on-primary-fixed', 'Networking': 'bg-secondary-container text-on-secondary-container', 'NGO/Social': 'bg-green-100 text-green-800' }[e.category] || 'bg-surface-container text-on-surface-variant';
+                container.innerHTML += `
+      <div class="event-card bg-surface-container-lowest rounded-xl whisper-shadow overflow-hidden cursor-pointer" onclick="loadEventDetail('${e.id}')">
+        <div class="relative">
+          <div class="h-44 bg-surface-container skeleton" id="img-${e.id}"></div>
+          <span class="absolute top-3 left-3 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded ${catColor}">${e.category || 'Event'}</span>
+          ${e.is_featured ? '<span class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-primary text-on-primary">★ Featured</span>' : ''}
+        </div>
+        <div class="p-5">
+          <div class="flex items-center gap-3 text-[10px] uppercase tracking-wider text-on-surface-variant mb-2">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:12px">calendar_month</span>${date}</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:12px">location_on</span>${e.venue || e.college_name || ''}</span>
+          </div>
+          <h3 class="card-title font-headline text-lg text-on-surface mb-2 leading-snug transition-colors">${e.title}</h3>
+          <p class="text-xs text-on-surface-variant line-clamp-2 mb-4">${e.description || ''}</p>
+          ${e.capacity ? `<div class="mb-3"><div class="flex justify-between text-[10px] text-on-surface-variant mb-1"><span>${e.registered || 0} registered</span><span>${e.capacity} capacity</span></div><div class="h-1 bg-surface-container rounded-full"><div class="h-1 rounded-full gold-gradient" style="width:${pct}%"></div></div></div>` : ''}
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-semibold ${e.price === 0 ? 'text-on-surface-variant' : 'text-primary'}">${price}</span>
+            <button class="text-sm font-semibold text-primary flex items-center gap-1 hover:gap-2 transition-all">View Details <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span></button>
+          </div>
+        </div>
+      </div>`;
+                // Load Unsplash placeholder image
+                loadEventImage(e.id, e.image_query || e.category);
+            });
+        }
+
+        function loadEventImage(id, query) {
+            // Use a deterministic color based on category
+            const colors = { 'Tech': '#1a1c1c', 'Cultural': '#4e463b', 'Academic': '#735a32', 'Networking': '#4f5f7a', 'NGO/Social': '#2d5a27', 'Sports': '#1a3a5c' };
+            const color = colors[query] || '#735a32';
+            const el = document.getElementById(`img-${id}`);
+            if (el) {
+                el.style.background = `linear-gradient(135deg, ${color}dd, ${color}88)`;
+                el.classList.remove('skeleton');
+                el.innerHTML = `<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-white/30" style="font-size:48px">photo</span></div>`;
+            }
+        }
+
+        // =========================================================
+        // EVENT DETAIL
+        // =========================================================
+        async function loadEventDetail(eventId) {
+            navigate('event-detail');
+            const container = document.getElementById('event-detail-content');
+            container.innerHTML = `<div class="h-96 skeleton rounded-xl"></div>`;
+
+            const headers = state.token ? { 'Authorization': `Bearer ${state.token}` } : {};
+            const res = await fetch(`${API}/events/${eventId}`, { headers });
+            const e = await res.json();
+            if (!res.ok) { container.innerHTML = '<p class="text-center py-12 text-on-surface-variant">Event not found</p>'; return; }
+
+            const date = new Date(e.date).toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+            const time = new Date(e.date).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+            const pct = e.capacity ? Math.round((e.registered || 0) / e.capacity * 100) : 0;
+            const historyChart = e.historical_data?.length ? renderHistoryChart(e.historical_data) : '';
+
+            container.innerHTML = `
+    <button onclick="navigate('events')" class="flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary mb-6 transition-colors">
+      <span class="material-symbols-outlined" style="font-size:16px">arrow_back</span> Back to Events
+    </button>
+    <!-- Hero -->
+    <div class="rounded-xl overflow-hidden relative mb-8" style="height:320px;background:linear-gradient(135deg,#1a1c1cdd,#735a3288)">
+      <div class="absolute inset-0 flex flex-col justify-end p-8">
+        <span class="text-xs font-bold uppercase tracking-widest text-white/70 mb-2">${e.society?.name || ''} · ${e.college?.short || e.college_name || ''}</span>
+        <h1 class="font-headline text-3xl md:text-4xl text-white mb-3 leading-tight">${e.title}</h1>
+        <div class="flex flex-wrap gap-4 text-white/80 text-sm">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">calendar_month</span>${date} at ${time}</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">location_on</span>${e.venue}</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">confirmation_number</span>${e.price === 0 ? (e.price_label || 'Free Entry') : '₹' + e.price}</span>
+        </div>
+        <div class="flex gap-3 mt-4">
+          <button onclick="registerEvent('${e.id}',${e.user_registered || false})" id="reg-btn"
+            class="${e.user_registered ? 'border border-white/40 text-white' : 'gold-gradient text-on-primary'} font-semibold px-6 py-2.5 rounded-full text-sm">
+            ${e.user_registered ? '✓ Registered' : 'Register for Event →'}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Description -->
+        <div>
+          <h2 class="font-headline text-2xl italic text-on-surface mb-4">The Proposition</h2>
+          <p class="text-on-surface-variant leading-relaxed">${e.long_description || e.description || ''}</p>
+        </div>
+        
+        <!-- Schedule -->
+        ${e.schedule?.length ? `
+        <div>
+          <h2 class="font-headline text-xl text-on-surface mb-4">Schedule</h2>
+          <div class="space-y-1">
+            ${e.schedule.map(s => `
+              <div class="flex gap-4 p-4 rounded-xl hover:bg-surface-container-low transition-colors">
+                <span class="text-sm font-bold text-primary-container min-w-[60px]">${s.time}</span>
+                <div>
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/60 mr-2">${s.type}</span>
+                  <span class="text-sm font-semibold text-on-surface">${s.title}</span>
+                  ${s.description ? `<p class="text-xs text-on-surface-variant mt-0.5">${s.description}</p>` : ''}
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
+
+        <!-- Tags -->
+        ${e.tags?.length ? `
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">Topics</h3>
+          <div class="flex flex-wrap gap-2">${e.tags.map(t => `<span class="chip px-3 py-1.5 rounded-full text-xs font-semibold">${t}</span>`).join('')}</div>
+        </div>` : ''}
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-5">
+        <!-- Registration status -->
+        <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-5">
+          <h3 class="font-semibold text-sm mb-4">Registration Status</h3>
+          <div class="flex justify-between text-sm mb-2"><span class="text-on-surface-variant">Registered</span><span class="font-bold text-on-surface">${e.registered || 0}</span></div>
+          <div class="flex justify-between text-sm mb-3"><span class="text-on-surface-variant">Capacity</span><span class="font-bold text-on-surface">${e.capacity || '—'}</span></div>
+          ${e.capacity ? `<div class="h-2 bg-surface-container rounded-full"><div class="h-2 rounded-full gold-gradient" style="width:${pct}%"></div></div><p class="text-xs text-on-surface-variant mt-1">${pct}% full</p>` : ''}
+        </div>
+
+        <!-- Speakers -->
+        ${e.speakers?.length ? `
+        <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-5">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Keynote Speaker</p>
+          ${e.speakers.map(s => `
+            <div class="flex gap-3 items-start">
+              <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center text-white font-bold">${s.name.charAt(0)}</div>
+              <div><p class="font-semibold text-sm">${s.name}</p><p class="text-xs text-on-surface-variant italic">${s.title || ''}</p><p class="text-xs text-on-surface-variant mt-1">${s.bio || ''}</p></div>
+            </div>`).join('')}
+        </div>` : ''}
+
+        <!-- Historical data -->
+        ${historyChart}
+
+        <!-- Society -->
+        ${e.society ? `
+        <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-5">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Organizer</p>
+          <button onclick="loadSocietyDetail('${e.society_id}')" class="text-primary font-semibold hover:underline">${e.society.name}</button>
+          <p class="text-xs text-on-surface-variant">${e.society.category}</p>
+        </div>` : ''}
+      </div>
+    </div>
+  `;
+        }
+
+        function renderHistoryChart(data) {
+            const maxFootfall = Math.max(...data.map(d => d.footfall));
+            return `
+    <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-5">
+      <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-4">Previous Year Footfall</p>
+      <div class="flex items-end gap-3 h-24">
+        ${data.map(d => {
+                const h = Math.round((d.footfall / maxFootfall) * 80);
+                return `<div class="flex-1 flex flex-col items-center gap-1">
+            <span class="text-xs font-bold text-primary">${d.footfall}</span>
+            <div class="w-full rounded-t gold-gradient chart-bar" style="height:${h}px"></div>
+            <span class="text-[10px] text-on-surface-variant">${d.year}</span>
+          </div>`;
+            }).join('')}
+      </div>
+      <div class="mt-3 pt-3 border-t border-outline-variant/10 flex gap-4">
+        ${data.slice(-1).map(d => `
+          <div class="text-center"><p class="text-xs text-on-surface-variant">Avg Rating</p><p class="font-bold text-sm text-primary">★ ${d.rating}</p></div>
+          <div class="text-center"><p class="text-xs text-on-surface-variant">Registrations</p><p class="font-bold text-sm text-on-surface">${d.registrations}</p></div>
+        `).join('')}
+      </div>
+    </div>`;
+        }
+
+        async function registerEvent(eventId, isRegistered) {
+            if (!state.token) { navigate('login'); showToast('Please login to register', 'info'); return; }
+            const method = isRegistered ? 'DELETE' : 'POST';
+            const data = await authFetch(`/events/${eventId}/register`, method);
+            if (data) {
+                showToast(isRegistered ? 'Unregistered from event' : 'Registered successfully! 🎉');
+                loadEventDetail(eventId);
+            }
+        }
+
+        // =========================================================
+        // SOCIETIES
+        // =========================================================
+        async function loadSocieties() {
+            const search = document.getElementById('soc-search')?.value || '';
+            const college = document.getElementById('soc-college-filter')?.value || '';
+            const cat = document.getElementById('soc-cat-filter')?.value || '';
+            let url = `/societies/?search=${search}&college_id=${college}&category=${cat}`;
+            if (state.userLat) url += `&lat=${state.userLat}&lng=${state.userLng}`;
+
+            const data = await apiFetch(url);
+            if (!data) return;
+            renderSocietyGrid(data.societies, 'societies-grid');
+        }
+
+        function setSocChip(cat, el) {
+            document.querySelectorAll('#page-societies .chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            const sel = document.getElementById('soc-cat-filter');
+            if (sel) sel.value = cat;
+            loadSocieties();
+        }
+
+        function renderSocietyGrid(societies, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            if (!societies?.length) {
+                container.innerHTML = `<div class="col-span-3 text-center py-16 text-on-surface-variant"><span class="material-symbols-outlined text-4xl block mb-2">group_off</span>No societies found</div>`;
+                return;
+            }
+            societies.forEach(s => {
+                container.innerHTML += `
+      <div class="bg-surface-container-lowest rounded-xl whisper-shadow p-6 hover:shadow-md transition-all cursor-pointer" onclick="loadSocietyDetail('${s.id}')">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-2xl">${s.logo || '🏛️'}</div>
+          <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-surface-container text-on-surface-variant">${s.category}</span>
+        </div>
+        <h3 class="font-headline text-lg text-on-surface mb-1">${s.name}</h3>
+        <p class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/60 mb-3">${s.college_short || s.college_name || s.college_id} ${s.distance_km !== null && s.distance_km !== undefined ? `· ${s.distance_km}km away` : ''}</p>
+        <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">${s.description || ''}</p>
+        <div class="flex items-center justify-between">
+          <div><span class="text-xs text-on-surface-variant">Members</span><p class="font-bold text-sm">${(s.member_count || 0).toLocaleString()}</p></div>
+          <button class="border border-outline-variant/30 text-sm font-semibold text-on-surface px-4 py-2 rounded-full hover:bg-surface-container-low transition-colors">Join Society</button>
+        </div>
+      </div>`;
+            });
+        }
+
+        async function loadSocietyDetail(societyId) {
+            navigate('society-detail');
+            const container = document.getElementById('society-detail-content');
+            container.innerHTML = `<div class="h-64 skeleton rounded-xl mb-4"></div>`;
+
+            const headers = state.token ? { 'Authorization': `Bearer ${state.token}` } : {};
+            const res = await fetch(`${API}/societies/${societyId}`, { headers });
+            const s = await res.json();
+            if (!res.ok) { container.innerHTML = '<p class="text-center py-12 text-on-surface-variant">Society not found</p>'; return; }
+
+            const eventsList = s.events?.map(e => {
+                const date = e.date ? new Date(e.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '';
+                return `<div class="flex gap-4 p-4 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer" onclick="loadEventDetail('${e.id}')">
+      <div class="w-14 text-center flex-shrink-0 bg-surface-container rounded-lg py-2">
+        <p class="text-[10px] text-on-surface-variant">${date.split(' ')[1] || ''}</p>
+        <p class="text-lg font-bold text-primary">${date.split(' ')[0] || ''}</p>
+      </div>
+      <div>
+        <p class="font-semibold text-sm">${e.title}</p>
+        <p class="text-xs text-on-surface-variant">${e.venue || ''}</p>
+      </div>
+      <span class="material-symbols-outlined ml-auto text-on-surface-variant" style="font-size:18px">arrow_forward</span>
+    </div>`;
+            }).join('') || '<p class="text-on-surface-variant text-sm py-4">No events scheduled yet.</p>';
+
+            container.innerHTML = `
+    <button onclick="navigate('societies')" class="flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary mb-6 transition-colors">
+      <span class="material-symbols-outlined" style="font-size:16px">arrow_back</span> Back to Societies
+    </button>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-8">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-2">Society Spotlight · ${s.category}</p>
+          <h1 class="font-headline text-4xl text-on-surface mb-3 leading-tight">${s.name}</h1>
+          <p class="text-on-surface-variant text-base leading-relaxed">${s.description || ''}</p>
+        </div>
+        
+        <div>
+          <h2 class="font-headline text-xl text-on-surface mb-4">Upcoming Events</h2>
+          <div class="space-y-1">${eventsList}</div>
+        </div>
+
+        ${s.tags?.length ? `
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">Focus Areas</h3>
+          <div class="flex flex-wrap gap-2">${s.tags.map(t => `<span class="chip px-3 py-1.5 rounded-full text-xs font-semibold">${t}</span>`).join('')}</div>
+        </div>` : ''}
+      </div>
+      
+      <div class="space-y-5">
+        <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-6">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Current Charter</p>
+          <p class="text-sm text-on-surface-variant italic leading-relaxed mb-4">"${s.charter || ''}"</p>
+          <button onclick="joinSociety('${s.id}',${s.is_member || false})" id="join-btn"
+            class="${s.is_member ? 'border border-outline-variant/30 text-on-surface-variant' : 'gold-gradient text-on-primary'} w-full font-semibold py-3 rounded-full text-sm">
+            ${s.is_member ? '✓ Member' : 'Join the Society →'}
+          </button>
+        </div>
+
+        <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-5">
+          <div class="flex justify-between mb-3"><p class="text-xs text-on-surface-variant">Members</p><p class="font-bold">${(s.actual_member_count || s.member_count || 0).toLocaleString()}</p></div>
+          <div class="flex justify-between mb-3"><p class="text-xs text-on-surface-variant">Events Hosted</p><p class="font-bold">${s.past_events_count || 0}</p></div>
+          <div class="flex justify-between mb-3"><p class="text-xs text-on-surface-variant">Founded</p><p class="font-bold">${s.founded_year || '—'}</p></div>
+          <div class="flex justify-between"><p class="text-xs text-on-surface-variant">College</p><p class="font-bold text-sm">${s.college?.short || s.college_id}</p></div>
+        </div>
+      </div>
+    </div>`;
+        }
+
+        async function joinSociety(societyId, isMember) {
+            if (!state.token) { navigate('login'); return; }
+            const method = isMember ? 'DELETE' : 'POST';
+            const data = await authFetch(`/societies/${societyId}/join`, method);
+            if (data) { showToast(isMember ? 'Left society' : 'Joined society! 🎉'); loadSocietyDetail(societyId); }
+        }
+
+        // =========================================================
+        // GEO
+        // =========================================================
+        function useGeoForEvents() {
+            if (state.userLat) { loadEvents(true); showToast('Showing events near you 📍'); return; }
+            navigator.geolocation.getCurrentPosition(pos => {
+                state.userLat = pos.coords.latitude;
+                state.userLng = pos.coords.longitude;
+                loadEvents(true);
+                showToast('Showing events near you 📍');
+            }, () => showToast('Could not get location', 'error'));
+        }
+
+        function useGeoForSocieties() {
+            if (state.userLat) { loadSocieties(); showToast('Sorted by nearest college 📍'); return; }
+            navigator.geolocation.getCurrentPosition(pos => {
+                state.userLat = pos.coords.latitude;
+                state.userLng = pos.coords.longitude;
+                loadSocieties();
+                showToast('Sorted by nearest college 📍');
+            }, () => showToast('Could not get location', 'error'));
+        }
+
+        async function loadNearbyColleges() {
+            const container = document.getElementById('colleges-list');
+            if (!container) return;
+            container.innerHTML = '<div class="col-span-2 skeleton h-24 rounded-xl"></div>';
+
+            if (!state.userLat) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    state.userLat = pos.coords.latitude;
+                    state.userLng = pos.coords.longitude;
+                    loadNearbyColleges();
+                }, () => {
+                    // Fallback: Delhi center
+                    state.userLat = 28.6; state.userLng = 77.2;
+                    loadNearbyColleges();
+                });
+                return;
+            }
+
+            const data = await apiFetch(`/geo/nearby-colleges?lat=${state.userLat}&lng=${state.userLng}`);
+            if (!data) return;
+            container.innerHTML = '';
+            data.colleges.forEach(c => {
+                container.innerHTML += `
+      <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h4 class="font-semibold text-on-surface">${c.name}</h4>
+            <p class="text-xs text-on-surface-variant">${c.affiliation}</p>
+            <p class="text-xs text-on-surface-variant mt-1">${c.address}</p>
+          </div>
+          ${c.distance_km ? `<span class="text-xs font-bold text-primary bg-primary-fixed px-2 py-1 rounded-full">${c.distance_km}km</span>` : ''}
+        </div>
+        <button onclick="navigate('societies');document.getElementById('soc-college-filter').value='${c.id}';loadSocieties()" class="text-xs text-primary font-semibold mt-3 hover:underline">View Societies →</button>
+      </div>`;
+            });
+        }
+
+        // =========================================================
+        // PROFILE
+        // =========================================================
+        async function loadProfile() {
+            if (!state.token) { navigate('login'); return; }
+            const container = document.getElementById('profile-content');
+            container.innerHTML = '<div class="h-64 skeleton rounded-xl mb-4"></div>';
+
+            const user = await authFetch('/users/me');
+            if (!user) return;
+
+            const managedSocieties = user.managed_societies || [];
+
+            container.innerHTML = `
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Left: Profile Card -->
+      <div class="lg:col-span-1">
+        <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-6 text-center sticky top-20">
+          <div class="w-20 h-20 rounded-xl gold-gradient flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4">${(user.name || 'U').charAt(0)}</div>
+          <h2 class="font-headline text-xl text-on-surface">${user.name}</h2>
+          <p class="text-xs text-on-surface-variant mt-1">${user.role === 'manager' ? 'Society Manager' : `Student · ${user.year || ''}${user.year ? getYearSuffix(user.year) + ' Year' : ''}`}</p>
+          <p class="text-xs text-on-surface-variant">${user.college_name || user.college_id || ''}</p>
+          ${user.cgpa ? `<p class="text-sm font-bold text-primary mt-2">CGPA: ${user.cgpa}</p>` : ''}
+          
+          <div class="mt-4 pt-4 border-t border-outline-variant/10 space-y-2">
+            ${user.interests?.slice(0, 5).map(i => `<span class="chip px-2 py-1 rounded-full text-xs font-semibold mr-1 mb-1 inline-block">${i}</span>`).join('') || ''}
+            <button onclick="openInterestsModal()" class="block text-xs text-primary hover:underline mt-2">Edit Interests</button>
+          </div>
+
+          ${user.role === 'manager' ? `
+          <div class="mt-4 space-y-2">
+            <button onclick="openModal('create-society-modal')" class="w-full border border-outline-variant/30 text-sm font-semibold py-2 rounded-full hover:bg-surface-container-low transition-colors">+ New Society</button>
+            <button onclick="openCreateEventModal()" class="w-full gold-gradient text-on-primary text-sm font-semibold py-2 rounded-full">+ New Event</button>
+          </div>` : ''}
+        </div>
+      </div>
+
+      <!-- Right: Stats & Activity -->
+      <div class="lg:col-span-3 space-y-6">
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="stat-card whisper-shadow"><p class="text-xs uppercase tracking-wider text-on-surface-variant">Events Attended</p><p class="font-headline text-3xl text-primary mt-1">${(user.events_attended || []).length}</p></div>
+          <div class="stat-card whisper-shadow"><p class="text-xs uppercase tracking-wider text-on-surface-variant">Societies Joined</p><p class="font-headline text-3xl text-primary mt-1">${(user.societies_joined || []).length}</p></div>
+          <div class="stat-card whisper-shadow"><p class="text-xs uppercase tracking-wider text-on-surface-variant">Connections</p><p class="font-headline text-3xl text-primary mt-1">${user.connections || 0}</p></div>
+          <div class="stat-card whisper-shadow"><p class="text-xs uppercase tracking-wider text-on-surface-variant">${user.cgpa ? 'CGPA' : 'Student ID'}</p><p class="font-headline text-2xl text-primary mt-1">${user.cgpa || user.student_id}</p></div>
+        </div>
+
+        <!-- Registered Events -->
+        ${user.registered_events?.length ? `
+        <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-6">
+          <h3 class="font-headline text-lg mb-4">Upcoming Registered Events</h3>
+          <div class="space-y-3">
+            ${user.registered_events.slice(0, 5).map(e => `
+              <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-low cursor-pointer" onclick="loadEventDetail('${e.id}')">
+                <div class="w-10 h-10 rounded-lg gold-gradient flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                  ${e.category?.charAt(0) || 'E'}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-semibold text-sm truncate">${e.title}</p>
+                  <p class="text-xs text-on-surface-variant">${e.venue || ''} · ${e.date ? new Date(e.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : ''}</p>
+                </div>
+                <span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">arrow_forward</span>
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
+
+        <!-- Societies -->
+        ${user.societies_detail?.length ? `
+        <div class="bg-surface-container-lowest whisper-shadow rounded-xl p-6">
+          <h3 class="font-headline text-lg mb-4">Your Societies</h3>
+          <div class="flex flex-wrap gap-3">
+            ${user.societies_detail.map(s => `
+              <button onclick="loadSocietyDetail('${s.id}')" class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full text-sm font-semibold hover:bg-surface-container transition-colors">
+                <span class="text-primary">${s.name}</span>
+                <span class="text-xs text-on-surface-variant">${s.category}</span>
+              </button>`).join('')}
+          </div>
+        </div>` : ''}
+      </div>
+    </div>`;
+        }
+
+        function getYearSuffix(y) {
+            return ['st', 'nd', 'rd', 'th'][Math.min(y - 1, 3)] || 'th';
+        }
+
+        // =========================================================
+        // MANAGER: CREATE EVENT / SOCIETY
+        // =========================================================
+        async function openCreateEventModal() {
+            if (!state.user || state.user.role !== 'manager') { showToast('Manager access required', 'error'); return; }
+            // Load manager's societies
+            const sel = document.getElementById('ce-society');
+            sel.innerHTML = '';
+            const data = await authFetch('/users/me');
+            if (data?.managed_societies) {
+                for (const sid of data.managed_societies) {
+                    sel.innerHTML += `<option value="${sid}">${sid}</option>`;
+                }
+            }
+            openModal('create-event-modal');
+        }
+
+        async function submitCreateEvent() {
+            const body = {
+                title: document.getElementById('ce-title').value,
+                society_id: document.getElementById('ce-society').value,
+                college_id: state.user.college_id || '',
+                category: document.getElementById('ce-category').value,
+                description: document.getElementById('ce-desc').value,
+                date: new Date(document.getElementById('ce-date').value).toISOString(),
+                venue: document.getElementById('ce-venue').value,
+                price: parseFloat(document.getElementById('ce-price').value || '0'),
+                capacity: parseInt(document.getElementById('ce-cap').value || '100'),
+                tags: document.getElementById('ce-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+            };
+            const data = await authFetch('/events/', 'POST', body);
+            if (data) { closeModal('create-event-modal'); showToast('Event created! 🎉'); navigate('events'); }
+        }
+
+        async function submitCreateSociety() {
+            const body = {
+                name: document.getElementById('cs-name').value,
+                college_id: document.getElementById('cs-college').value || state.user.college_id,
+                category: document.getElementById('cs-category').value,
+                description: document.getElementById('cs-desc').value,
+                charter: document.getElementById('cs-charter').value,
+                tags: document.getElementById('cs-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+            };
+            const data = await authFetch('/societies/', 'POST', body);
+            if (data) { closeModal('create-society-modal'); showToast('Society registered! 🎉'); navigate('societies'); }
+        }
+
+        // =========================================================
+        // UTILITY
+        // =========================================================
+        async function apiFetch(path) {
+            try {
+                const res = await fetch(API + path);
+                if (!res.ok) return null;
+                return await res.json();
+            } catch (e) { return null; }
+        }
+
+        async function authFetch(path, method = 'GET', body = null) {
+            if (!state.token) return null;
+            try {
+                const opts = { method, headers: { 'Authorization': `Bearer ${state.token}`, 'Content-Type': 'application/json' } };
+                if (body && method !== 'GET') opts.body = JSON.stringify(body);
+                const res = await fetch(API + path, opts);
+                if (res.status === 401) { logout(); return null; }
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    showToast(err.detail || 'Request failed', 'error');
+                    return null;
+                }
+                return await res.json();
+            } catch (e) { showToast('Connection error', 'error'); return null; }
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = toast.querySelector('.material-symbols-outlined');
+            document.getElementById('toast-msg').textContent = msg;
+            icon.textContent = type === 'error' ? 'error' : type === 'info' ? 'info' : 'check_circle';
+            icon.className = `material-symbols-outlined ${type === 'error' ? 'text-red-400' : type === 'info' ? 'text-blue-400' : 'text-green-400'}`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function showError(el, msg) {
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+
+        function showLoading(id) { document.getElementById(id)?.classList.remove('hidden'); }
+        function hideLoading(id) { document.getElementById(id)?.classList.add('hidden'); }
+
+        function openModal(id) { document.getElementById(id)?.classList.add('open'); }
+        function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(m => {
+            m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+        });
+    </script>
+</body>
+
+</html>
