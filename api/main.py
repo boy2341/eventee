@@ -103,6 +103,3 @@ async def login(data: LoginRequest):
 async def get_events():
     return {"events": db["events"], "page": 1, "pages": 1}
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
